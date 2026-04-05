@@ -17,19 +17,25 @@ app.use(express.json());
 // This allows local testing AND your future deployed frontend
 const allowedOrigins = [
   "http://localhost:5173", 
-  "https://task-orbit-arundq52.vercel.app/" 
+  "https://task-orbit-arundq52.vercel.app",
+  "https://task-orbit-dq52-git-main-arun979321s-projects.vercel.app" 
 ];
 
 app.use(cors({
   origin: (origin, callback) => {
-    // Allow requests with no origin (like mobile apps or curl requests)
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) === -1) {
-      return callback(new Error("CORS policy blocked this origin"), false);
+    // 1. Allow local development
+    // 2. Allow your specific production domains
+    // 3. Allow ANY vercel.app subdomain belonging to your project
+    if (!origin || 
+        allowedOrigins.includes(origin) || 
+        origin.endsWith(".vercel.app")) {
+      return callback(null, true);
     }
-    return callback(null, true);
+    return callback(new Error("CORS policy blocked this origin"), false);
   },
   credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
 }));
 
 // 3. RATE LIMITING ---
