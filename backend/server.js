@@ -17,7 +17,7 @@ app.use(express.json());
 // This allows local testing AND your future deployed frontend
 const allowedOrigins = [
   "http://localhost:5173", 
-  "https://your-frontend-app.vercel.app" // 👈 REPLACE THIS with your Vercel URL later
+  "https://task-orbit-arundq52.vercel.app/" 
 ];
 
 app.use(cors({
