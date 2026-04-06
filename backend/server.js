@@ -9,16 +9,22 @@ connectDB();
 
 const app = express();
 
-// 1. SECURITY & PARSING ---
+// ==========================================
+// 1. PROXY & SECURITY (CRITICAL FOR RENDER)
+// ==========================================
+// Tell Express to trust Render's proxy so rate limiting works correctly
+app.set("trust proxy", 1); 
+
 app.use(helmet()); 
 app.use(express.json());
 
-// 2. DYNAMIC CORS ---
-// This allows local testing AND your future deployed frontend
+// ==========================================
+// 2. DYNAMIC CORS
+// ==========================================
 const allowedOrigins = [
   "http://localhost:5173", 
   "https://task-orbit-arundq52.vercel.app",
-  "https://task-orbit-dq52-git-main-arun979321s-projects.vercel.app" 
+  "https://task-orbit-dq52.vercel.app"
 ];
 
 app.use(cors({
@@ -38,10 +44,12 @@ app.use(cors({
   allowedHeaders: ["Content-Type", "Authorization"]
 }));
 
-// 3. RATE LIMITING ---
+// ==========================================
+// 3. RATE LIMITING
+// ==========================================
 const globalLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // Limit each IP to 100 requests per window
+  max: 100, 
   message: "Too many requests, please try again later."
 });
 
@@ -51,15 +59,18 @@ const authLimiter = rateLimit({
   message: "Too many login attempts, please try again after 15 minutes."
 });
 
-// Apply global limit to everything, auth limit only to auth routes
+// Apply global limit to all routes
 app.use(globalLimiter);
 
-// 4. ROUTES ---
-// Health Check for Render (This is very important for deployment)
+// ==========================================
+// 4. ROUTES
+// ==========================================
+// Health Check for Render
 app.get("/health", (req, res) => {
   res.status(200).json({ status: "ok", uptime: process.uptime() });
 });
 
+// Auth and Task Routes
 app.use("/api/auth", authLimiter, require("./routes/authRoutes"));
 app.use("/api/tasks", require("./routes/taskRoutes"));
 
@@ -67,8 +78,9 @@ app.get("/", (req, res) => {
   res.send("API is secured and running...");
 });
 
-// 5. GLOBAL ERROR HANDLER ---
-// This prevents the server from crashing if an error occurs in a route
+// ==========================================
+// 5. GLOBAL ERROR HANDLER
+// ==========================================
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({
@@ -77,7 +89,9 @@ app.use((err, req, res, next) => {
   });
 });
 
-// 6. SERVER START ---
+// ==========================================
+// 6. SERVER START
+// ==========================================
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
