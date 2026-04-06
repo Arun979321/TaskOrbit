@@ -902,5 +902,41 @@ body.dark-mode .modal-body-scrollable::-webkit-scrollbar-thumb { background: #4b
     justify-content: center !important;
     padding: 12px !important;
   }
+
+  .tasks-layout-container.tiles {
+    display: flex !important;
+    flex-direction: column !important; /* Stack tiles vertically on small screens */
+    gap: 20px !important;
+  }
+
+  .tasks-layout-container.tiles .task-item {
+    width: 100% !important;
+    min-width: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+
+  /* Ensure content inside tiles doesn't squash */
+  .tasks-layout-container.tiles .task-main-content {
+    flex-direction: row !important; /* Checkbox and title stay side-by-side */
+    width: 100% !important;
+  }
+
+  /* Make subtasks and badges wrap inside tiles */
+  .tasks-layout-container.tiles .task-meta-badges {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+    width: 100% !important;
+  }
+
+  /* Force action buttons to full width in tiles */
+  .tasks-layout-container.tiles .task-actions {
+    margin-top: 15px !important;
+    width: 100% !important;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+  }
 }
 
