@@ -855,5 +855,52 @@ body.dark-mode .modal-body-scrollable::-webkit-scrollbar-thumb { background: #4b
     padding: 12px !important;
     justify-content: center;
   }
+
+  .tasks-toolbar {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 15px !important;
+    padding: 15px 0 !important;
+  }
+
+  /* 2. Fix the Task Count alignment */
+  .toolbar-count {
+    text-align: left;
+    margin-bottom: 5px;
+  }
+
+  /* 3. Make Search and Buttons stack in rows */
+  .toolbar-actions {
+    display: flex !important;
+    flex-direction: column !important; /* Stack search on top of buttons */
+    gap: 12px !important;
+    width: 100% !important;
+  }
+
+  /* 4. Make the Search Bar full width */
+  .toolbar-search-input {
+    width: 100% !important;
+    max-width: none !important;
+    box-sizing: border-box !important;
+  }
+
+  /* 5. Make the List/Tiles and Filter buttons sit side-by-side below search */
+  .toolbar-dropdown-container {
+    flex: 1;
+    width: 100%;
+  }
+
+  /* Container for the two buttons */
+  .toolbar-actions > div:not(:first-child) {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+  }
+
+  .toolbar-btn {
+    flex: 1 !important; /* Make buttons equal width */
+    justify-content: center !important;
+    padding: 12px !important;
+  }
 }
 
