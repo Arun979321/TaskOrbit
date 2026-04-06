@@ -313,7 +313,7 @@ body.dark-mode .toolbar-search-input:focus { border-color: #818cf8; background: 
   z-index: 10;
 } */
 
-/* --- 🌈 WRAPPER & ANIMATION --- */
+/* ---  WRAPPER & ANIMATION --- */
 .tasks-wrapper {
   display: flex;
   justify-content: center;
@@ -795,3 +795,84 @@ body.dark-mode .modal-grid { background: #2b2b2b; border-color: #444; }
 body.dark-mode .modal-grid-item .value { color: #f9fafb; }
 body.dark-mode .modal-body-scrollable::-webkit-scrollbar-thumb { background: #4b5563; }
 
+
+
+/* =========================================
+   MOBILE RESPONSIVE FIXES (Add at the bottom)
+========================================= */
+@media (max-width: 768px) {
+  /* 1. Reduce container padding so it doesn't squash content */
+  .tasks-container {
+    padding: 20px 15px;
+    border-radius: 16px;
+    margin: 10px;
+    width: calc(100% - 20px);
+  }
+
+  /* 2. Fix the Task Item layout */
+  .task-item {
+    flex-direction: column; 
+    align-items: flex-start;
+    gap: 15px;
+    padding: 15px;
+  }
+
+  .task-main-content {
+    width: 100%;
+    align-items: flex-start;
+  }
+
+  /* 3. Stop the "Vertical Text" effect */
+  .task-title {
+    font-size: 15px;
+    display: block;
+    width: 100%;
+    white-space: normal; /* Forces normal wrapping */
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+
+  /* 4. Fix Toolbar (Search/Filter/View) */
+  .tasks-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .toolbar-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Search is one row, buttons another */
+    gap: 8px;
+  }
+
+  .toolbar-search-input {
+    width: 100% !important;
+    max-width: none;
+  }
+
+  /* 5. Fix Tabs */
+  .tab-btn {
+    padding: 10px 5px;
+    font-size: 13px;
+  }
+
+  /* 6. Fix Task Actions (Buttons) */
+  .task-actions {
+    width: 100%;
+    margin-left: 0;
+    justify-content: space-between;
+  }
+
+  .edit-btn, .delete-btn {
+    flex: 1;
+    text-align: center;
+  }
+}
+
+/* Extra small screens fix */
+@media (max-width: 400px) {
+  .input-row {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
