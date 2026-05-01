@@ -9,17 +9,17 @@ const nodemailer = require("nodemailer");
 const sendEmail = async (options) => {
   try {
     // --- A. Configure Transporter ---
-    // Using host/port 587 is more reliable on Render/Cloud than Port 465
+    // Port 465 with secure: true is the most stable configuration for Gmail on Render
     const transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
-      port: 587,
-      secure: false, // Must be false for port 587
+      port: 465,
+      secure: true, // Use SSL for port 465
       auth: {
         user: process.env.EMAIL_USERNAME,
-        pass: process.env.EMAIL_PASSWORD, // Ensure this is a 16-character App Password
+        pass: process.env.EMAIL_PASSWORD, // Must be the 16-character App Password (no spaces)
       },
       tls: {
-        // This helps bypass network restrictions on some cloud providers
+        // Essential for bypassing certain network restrictions on cloud providers
         rejectUnauthorized: false, 
       },
     });
@@ -37,6 +37,7 @@ const sendEmail = async (options) => {
     console.log("Email sent successfully: ", info.messageId);
     
   } catch (error) {
+    // Detailed logging for debugging in the Render dashboard
     console.error("Nodemailer Error: ", error.message);
     throw new Error("Email could not be sent");
   }
