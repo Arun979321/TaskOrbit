@@ -21,11 +21,12 @@ app.use(express.json());
 // ==========================================
 // 2. DYNAMIC CORS
 // ==========================================
+
 const allowedOrigins = [
   "http://localhost:5173", 
-  "https://task-orbit-seven.vercel.app", // Added your new primary domain from image_49ee7e.png
-  "https://task-orbit-arundq52.vercel.app",
-  "https://task-orbit-dq52.vercel.app"
+  "https://task-orbit-teal.vercel.app", // Ensure this matches image_495761.png
+  "https://task-orbit-seven.vercel.app",
+  "https://task-orbit-arundq52.vercel.app"
 ];
 
 app.use(cors({
