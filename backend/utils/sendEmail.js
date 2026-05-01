@@ -10,19 +10,15 @@ const sendEmail = async (options) => {
   try {
     // --- A. Configure Transporter ---
     const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
-      port: 465,
-      secure: true, // Use SSL for port 465
-      auth: {
-        user: process.env.EMAIL_USERNAME,
-        pass: process.env.EMAIL_PASSWORD, // Ensure 16-char App Password (no spaces)
-      },
-      tls: {
-        rejectUnauthorized: false, 
-      },
-      // CRITICAL: Forces IPv4 to resolve the ENETUNREACH error on Render
-      family: 4 
-    });
+  host: "smtp.gmail.com",
+  port: 587,          // 🔥 CHANGE
+  secure: false,      // 🔥 CHANGE
+  auth: {
+    user: process.env.EMAIL_USERNAME,
+    pass: process.env.EMAIL_PASSWORD,
+  },
+  family: 4           // keep this
+});
 
     // --- B. Construct Email Payload ---
     const mailOptions = {
