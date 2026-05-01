@@ -22,13 +22,13 @@ app.use(express.json());
 // 2. DYNAMIC CORS
 // ==========================================
 
+
 const allowedOrigins = [
   "http://localhost:5173", 
-  "https://task-orbit-teal.vercel.app", // Ensure this matches image_495761.png
+  "https://task-orbit-teal.vercel.app", // Matches your latest Vercel domain
   "https://task-orbit-seven.vercel.app",
   "https://task-orbit-arundq52.vercel.app"
 ];
-
 app.use(cors({
   origin: (origin, callback) => {
     // Allows local dev, listed production domains, and any Vercel preview branch
