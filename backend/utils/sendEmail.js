@@ -9,24 +9,24 @@ const nodemailer = require("nodemailer");
 const sendEmail = async (options) => {
   try {
     // --- A. Configure Transporter ---
-    // Port 465 with secure: true is the most stable configuration for Gmail on Render
     const transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
       port: 465,
       secure: true, // Use SSL for port 465
       auth: {
         user: process.env.EMAIL_USERNAME,
-        pass: process.env.EMAIL_PASSWORD, // Must be the 16-character App Password (no spaces)
+        pass: process.env.EMAIL_PASSWORD, // Ensure 16-char App Password (no spaces)
       },
       tls: {
-        // Essential for bypassing certain network restrictions on cloud providers
         rejectUnauthorized: false, 
       },
+      // CRITICAL: Forces IPv4 to resolve the ENETUNREACH error on Render
+      family: 4 
     });
 
     // --- B. Construct Email Payload ---
     const mailOptions = {
-      from: `Task Manager <${process.env.EMAIL_FROM}>`,
+      from: `Task Orbit <${process.env.EMAIL_FROM}>`, // Updated name to match your project
       to: options.email,
       subject: options.subject,
       text: options.message,
@@ -37,7 +37,7 @@ const sendEmail = async (options) => {
     console.log("Email sent successfully: ", info.messageId);
     
   } catch (error) {
-    // Detailed logging for debugging in the Render dashboard
+    // Detailed logging for the Render dashboard
     console.error("Nodemailer Error: ", error.message);
     throw new Error("Email could not be sent");
   }
