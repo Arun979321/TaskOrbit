@@ -12,7 +12,7 @@ const app = express();
 // ==========================================
 // 1. PROXY & SECURITY (CRITICAL FOR RENDER)
 // ==========================================
-// Tell Express to trust Render's proxy so rate limiting works correctly
+// Essential for Render's load balancer to pass the correct client IP to rateLimit
 app.set("trust proxy", 1); 
 
 app.use(helmet()); 
@@ -23,15 +23,14 @@ app.use(express.json());
 // ==========================================
 const allowedOrigins = [
   "http://localhost:5173", 
+  "https://task-orbit-seven.vercel.app", // Added your new primary domain from image_49ee7e.png
   "https://task-orbit-arundq52.vercel.app",
   "https://task-orbit-dq52.vercel.app"
 ];
 
 app.use(cors({
   origin: (origin, callback) => {
-    // 1. Allow local development
-    // 2. Allow your specific production domains
-    // 3. Allow ANY vercel.app subdomain belonging to your project
+    // Allows local dev, listed production domains, and any Vercel preview branch
     if (!origin || 
         allowedOrigins.includes(origin) || 
         origin.endsWith(".vercel.app")) {
@@ -59,18 +58,16 @@ const authLimiter = rateLimit({
   message: "Too many login attempts, please try again after 15 minutes."
 });
 
-// Apply global limit to all routes
 app.use(globalLimiter);
 
 // ==========================================
 // 4. ROUTES
 // ==========================================
-// Health Check for Render
+// Health check endpoint for Render monitoring
 app.get("/health", (req, res) => {
   res.status(200).json({ status: "ok", uptime: process.uptime() });
 });
 
-// Auth and Task Routes
 app.use("/api/auth", authLimiter, require("./routes/authRoutes"));
 app.use("/api/tasks", require("./routes/taskRoutes"));
 
