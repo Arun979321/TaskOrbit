@@ -9,29 +9,21 @@ connectDB();
 
 const app = express();
 
-// ==========================================
-// 1. PROXY & SECURITY (CRITICAL FOR RENDER)
-// ==========================================
-// Essential for Render's load balancer to pass the correct client IP to rateLimit
 app.set("trust proxy", 1); 
 
-app.use(helmet()); 
+app.use(helmet({
+  crossOriginResourcePolicy: { policy: "cross-origin" }
+})); 
 app.use(express.json());
-
-// ==========================================
-// 2. DYNAMIC CORS
-// ==========================================
-
 
 const allowedOrigins = [
   "http://localhost:5173", 
-  "https://task-orbit-teal.vercel.app", // Matches your latest Vercel domain
-  "https://task-orbit-seven.vercel.app",
-  "https://task-orbit-arundq52.vercel.app"
+  "http://127.0.0.1:5173", 
+  "https://task-orbit-teal.vercel.app"
 ];
+
 app.use(cors({
   origin: (origin, callback) => {
-    // Allows local dev, listed production domains, and any Vercel preview branch
     if (!origin || 
         allowedOrigins.includes(origin) || 
         origin.endsWith(".vercel.app")) {
@@ -44,27 +36,22 @@ app.use(cors({
   allowedHeaders: ["Content-Type", "Authorization"]
 }));
 
-// ==========================================
-// 3. RATE LIMITING
-// ==========================================
+const isDev = process.env.NODE_ENV !== "production";
+
 const globalLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, 
+  windowMs: 15 * 60 * 1000, 
+  max: isDev ? 1000 : 100, 
   message: "Too many requests, please try again later."
 });
 
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 20, 
+  max: isDev ? 100 : 20, 
   message: "Too many login attempts, please try again after 15 minutes."
 });
 
 app.use(globalLimiter);
 
-// ==========================================
-// 4. ROUTES
-// ==========================================
-// Health check endpoint for Render monitoring
 app.get("/health", (req, res) => {
   res.status(200).json({ status: "ok", uptime: process.uptime() });
 });
@@ -73,23 +60,16 @@ app.use("/api/auth", authLimiter, require("./routes/authRoutes"));
 app.use("/api/tasks", require("./routes/taskRoutes"));
 
 app.get("/", (req, res) => {
-  res.send("API is secured and running...");
+  res.send("API is running locally...");
 });
 
-// ==========================================
-// 5. GLOBAL ERROR HANDLER
-// ==========================================
 app.use((err, req, res, next) => {
-  console.error(err.stack);
   res.status(500).json({
     message: "Something went wrong on the server!",
-    error: process.env.NODE_ENV === "production" ? {} : err.message
+    error: isDev ? err.message : {} 
   });
 });
 
-// ==========================================
-// 6. SERVER START
-// ==========================================
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
