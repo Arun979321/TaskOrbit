@@ -23,7 +23,7 @@ const allowedOrigins = [
  
 ];
 
-app.use(cors({
+// app.use(cors({
 //   origin: (origin, callback) => {
 //     if (!origin || 
 //         allowedOrigins.includes(origin) || 
@@ -36,10 +36,11 @@ app.use(cors({
 //   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
 //   allowedHeaders: ["Content-Type", "Authorization"]
 // }));
-  app.use(cors({
+ app.use(cors({
   origin: true,
   credentials: true,
 }));
+
 app.options("*", cors());
 
 const isDev = process.env.NODE_ENV !== "production";
