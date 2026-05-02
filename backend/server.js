@@ -24,17 +24,21 @@ const allowedOrigins = [
 ];
 
 app.use(cors({
-  origin: (origin, callback) => {
-    if (!origin || 
-        allowedOrigins.includes(origin) || 
-        origin.endsWith(".vercel.app")) {
-      return callback(null, true);
-    }
-    return callback(new Error("CORS policy blocked this origin"), false);
-  },
+//   origin: (origin, callback) => {
+//     if (!origin || 
+//         allowedOrigins.includes(origin) || 
+//         origin.endsWith(".vercel.app")) {
+//       return callback(null, true);
+//     }
+//     return callback(new Error("CORS policy blocked this origin"), false);
+//   },
+//   credentials: true,
+//   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+//   allowedHeaders: ["Content-Type", "Authorization"]
+// }));
+  app.use(cors({
+  origin: true,
   credentials: true,
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"]
 }));
 
 const isDev = process.env.NODE_ENV !== "production";
