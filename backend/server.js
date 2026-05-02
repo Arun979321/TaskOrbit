@@ -14,51 +14,29 @@ app.set("trust proxy", 1);
 app.use(helmet({
   crossOriginResourcePolicy: { policy: "cross-origin" }
 })); 
-// app.use(express.json());
-
-// const allowedOrigins = [
-//   "http://localhost:5173", 
-//   "http://127.0.0.1:5173", 
-//   "https://taskorbit-production.up.railway.app/api"
-//   "https://taskorbit-production.up.railway.app/api/"
-//   "https://taskorbit-production.up.railway.app"
- 
-// ];
-
-// app.use(cors({
-//   origin: (origin, callback) => {
-//     if (!origin || 
-//         allowedOrigins.includes(origin) || 
-//         origin.endsWith(".vercel.app")) {
-//       return callback(null, true);
-//     }
-//     return callback(new Error("CORS policy blocked this origin"), false);
-//   },
-//   credentials: true,
-//   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-//   allowedHeaders: ["Content-Type", "Authorization"]
-// }));
-
 app.use(express.json());
 
 const allowedOrigins = [
-  "http://localhost:5173",
-  "http://127.0.0.1:5173",
+  "http://localhost:5173", 
+  "http://127.0.0.1:5173", 
   "https://taskorbit-production.up.railway.app"
+  "https://taskorbit-production.up.railway.app/api"
+ 
 ];
 
 app.use(cors({
   origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes(origin)) {
+    if (!origin || 
+        allowedOrigins.includes(origin) || 
+        origin.endsWith(".vercel.app")) {
       return callback(null, true);
     }
-    return callback(null, false);
+    return callback(new Error("CORS policy blocked this origin"), false);
   },
   credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
 }));
-
-// 🔥 ADD THIS LINE
-app.options("*", cors());
 
 const isDev = process.env.NODE_ENV !== "production";
 
