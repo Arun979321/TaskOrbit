@@ -36,10 +36,15 @@ const allowedOrigins = [
 //   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
 //   allowedHeaders: ["Content-Type", "Authorization"]
 // }));
- app.use(cors({
-  origin: true,
-  credentials: true,
+app.use(cors({
+  origin: "*",
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
 }));
+
+app.options("*", (req, res) => {
+  res.sendStatus(200);
+});
 
 app.options("*", cors());
 
