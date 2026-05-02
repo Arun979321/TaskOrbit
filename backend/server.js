@@ -20,7 +20,7 @@ const allowedOrigins = [
   "http://localhost:5173", 
   "http://127.0.0.1:5173", 
   "https://taskorbit-production.up.railway.app",
-
+  "https://taskorbit-production.up.railway.app/api",
  
 ];
 
