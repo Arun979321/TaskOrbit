@@ -40,6 +40,7 @@ app.use(cors({
   origin: true,
   credentials: true,
 }));
+app.options("*", cors());
 
 const isDev = process.env.NODE_ENV !== "production";
 
