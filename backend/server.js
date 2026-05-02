@@ -41,10 +41,21 @@ app.use(helmet({
 
 app.use(express.json());
 
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://127.0.0.1:5173",
+  "https://taskorbit-production.up.railway.app"
+];
+
 app.use(cors({
-  origin: "https://taskorbit-production.up.railway.app",
-  origin: "https://taskorbit-production.up.railway.app/api",
-  origin: "https://taskorbit-production.up.railway.appapi/",
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+
+    
+    return callback(null, false);
+  },
   credentials: true,
 }));
 
