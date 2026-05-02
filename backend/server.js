@@ -14,14 +14,14 @@ app.set("trust proxy", 1);
 app.use(helmet({
   crossOriginResourcePolicy: { policy: "cross-origin" }
 })); 
-app.use(express.json());
 
-const allowedOrigins = [
-  "http://localhost:5173", 
-  "http://127.0.0.1:5173", 
-  "https://taskorbit-production.up.railway.app"
+app.use(express.json());
+// const allowedOrigins = [
+//   "http://localhost:5173", 
+//   "http://127.0.0.1:5173", 
+//   "https://taskorbit-production.up.railway.app"
  
-];
+// ];
 
 // app.use(cors({
 //   origin: (origin, callback) => {
@@ -36,17 +36,12 @@ const allowedOrigins = [
 //   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
 //   allowedHeaders: ["Content-Type", "Authorization"]
 // }));
+
 app.use(cors({
-  origin: "*",
+  origin: "https://taskorbit-production.up.railway.app",
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
 }));
-
-app.options("*", (req, res) => {
-  res.sendStatus(200);
-});
-
-app.options("*", cors());
 
 const isDev = process.env.NODE_ENV !== "production";
 
