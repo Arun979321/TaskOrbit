@@ -52,12 +52,13 @@ app.use(cors({
     if (!origin || allowedOrigins.includes(origin)) {
       return callback(null, true);
     }
-
-    
     return callback(null, false);
   },
   credentials: true,
 }));
+
+// 🔥 ADD THIS LINE
+app.options("*", cors());
 
 const isDev = process.env.NODE_ENV !== "production";
 
