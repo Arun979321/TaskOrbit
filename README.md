@@ -1,84 +1,115 @@
+Task Orbit | Production-Grade MERN Task Management
 
+Task Orbit is a full stack productivity application built using the MERN stack with a strong focus on security scalability and seamless user experience It implements JWT based authentication task management workflows and a responsive user interface optimized for real world usage
 
-## =====> Author
-**Arun Kumar**
-Computer Science & Engineering Undergraduate
-Galgotias University
-*   **GPA:** 7.6
-*   **Stack:** MERN (MongoDB, Express, React, Node.js)
+🌐 Live Links
 
+Frontend Interface
+https://taskorbit-production.up.railway.app
 
+Backend API Service
+https://taskorbit-production.up.railway.app
 
-### **Final Checklist before saving:**
-1.  **Vercel:** Ensure you have added the `VITE_API_BASE_URL` in your Vercel Environment Variables and **Redeployed**.
-2.  **CORS:** Confirm `https://task-orbit-seven.vercel.app` is inside your `allowedOrigins` array in `server.js`.
-3.  **Networking:** Confirm `family: 4` is added to your `nodemailer.createTransport` in `sendEmail.js`Your documentation is strong, but to reflect the recent fixes and ensure it’s "production-grade," you should update it to include the networking and deployment optimizations we just implemented.
+=====> System Architecture
 
-Here is the suggested updated version. You can **copy-paste** this directly into your `README.md`.
+The application follows the MVC Model View Controller pattern on the backend to maintain clean separation of concerns while the frontend uses a component based architecture with React
 
----
+🔹 Backend Node.js and Express
 
-# Task Orbit | Production-Grade MERN Task Management
+Config Layer
+Database connection handled in db.js
 
-Task Orbit is a full-stack productivity suite built with a focus on security, scalability, and seamless user experience. It implements a decoupled MERN architecture, utilizing JWT-based authentication, automated email workflows, and a mobile-optimized responsive frontend.
+Controller Layer
+Business logic for authentication and task management
 
-## 🌐 Live Links
-*   **Frontend Interface:** [https://task-orbit-seven.vercel.app](https://task-orbit-seven.vercel.app) (Updated Primary Domain)
-*   **Backend API Service:** [https://taskorbit-api-wi20.onrender.com](https://taskorbit-api-wi20.onrender.com)
+Model Layer
+Mongoose schemas for Users Tasks and OTP
 
----
+Middleware
+Authentication security handling rate limiting and proxy trust configuration
 
-## =====> System Architecture
-The application follows the MVC (Model-View-Controller) pattern on the backend to maintain a clean separation of concerns, while the frontend leverages a Component-Based Architecture with React.
+Utils
+Email utility for OTP and password reset with production aware handling
 
-### 🔹 Backend (Node.js & Express)
-*   **Config Layer:** Managed database connection logic in `db.js`.
-*   **Controller Layer:** Business logic for Auth and Task management.
-*   **Model Layer:** Schema definitions using Mongoose for Users, Tasks, and OTP entities.
-*   **Middleware:** Custom authentication and security handlers, including `trust proxy` for Render load balancers.
-*   **Utils:** Modularized services like `sendEmail.js` with **IPv4 enforcement** to ensure high deliverability.
+🔹 Frontend React and Vite
 
-### 🔹 Frontend (React & Vite)
-*   **Pages:** Organized into specific modules (Dashboard, Profile, TaskDetail).
-*   **Services:** Centralized API communication using Axios configured for multi-environment support.
-*   **Styling:** Modular CSS architecture supporting persistent Light/Dark modes via `localStorage`.
+Pages
+Structured modules such as Dashboard Profile Tasks and Authentication
 
----
+Services
+Centralized API communication using Axios with environment based configuration
 
-## =====> Security Implementations
-Industry-standard security measures were a priority during development:
-*   **Dynamic CORS Policy:** Implemented a whitelist validator that supports local development and all trusted Vercel subdomains.
-*   **Rate Limiting:** Auth routes restricted to 20 attempts per 15-minute window via `express-rate-limit`.
-*   **Proxy Trust:** Configured `app.set("trust proxy", 1)` to accurately track client IPs behind Render's proxy.
-*   **JWT Authentication:** Stateless user sessions secured via JSON Web Tokens.
-*   **Environment Isolation:** Strict use of `.env` for secrets like API keys and DB strings.
+Styling
+Responsive design with clean layout and support for light and dark modes
 
----
+=====> Security Implementations
 
-## =====> Deployment & DevOps
-*   **Frontend (Vercel):** Configured with a dedicated `Root Directory` in `/frontend` and `vercel.json` rewrites to support Single Page Application (SPA) routing on refresh.
-*   **Backend (Render):** Hosted with automatic CI/CD from the main branch, utilizing custom health checks for maximum uptime.
-*   **IPv6 Bypass:** Hardened SMTP transport layer by forcing IPv4 (`family: 4`) to resolve cloud-specific networking constraints.
+CORS Policy
+Configured to allow trusted origins for both development and production
 
----
+Rate Limiting
+Authentication endpoints protected against brute force attacks
 
-## =====> Local Installation
+JWT Authentication
+Secure stateless session handling
 
-### Clone & Backend Setup:
-```bash
-git clone [https://github.com/arun979321/task-manager.git](https://github.com/arun979321/task-manager.git)
+Proxy Trust
+Configured to correctly handle client IPs in cloud deployment
+
+Environment Security
+Sensitive data stored securely using environment variables
+
+=====> Deployment and DevOps
+
+Deployment Platform
+Full application deployed on Railway with automatic CI CD
+
+Architecture
+Single domain deployment serving both frontend and backend
+
+Networking Consideration
+Handled real world cloud networking limitations such as blocked SMTP ports
+
+Email Handling Note
+Due to cloud platform restrictions on SMTP services email functionality is temporarily limited in production and is being migrated to API based solutions for reliability
+
+=====> Features
+
+User Authentication
+Secure login registration and profile management
+
+Task Management
+Create update delete and track tasks with filtering
+
+Responsive UI
+Optimized for both desktop and mobile devices
+
+Theme Support
+Light and dark mode with persistent preferences
+
+=====> Local Installation
+
+Clone the repository
+git clone https://github.com/arun979321/task-manager.git
+
+Backend Setup
 cd backend
 npm install
-# Add .env variables (MONGO_URI, JWT_SECRET, EMAIL_USERNAME, EMAIL_PASSWORD)
+Add environment variables such as MONGO_URI JWT_SECRET EMAIL_USERNAME EMAIL_PASSWORD
 npm start
-Frontend Setup:
-Bash
-cd ../frontend
+
+Frontend Setup
+cd frontend
 npm install
-# Create .env and set VITE_API_BASE_URL=http://localhost:5000
+Create environment variable VITE_API_URL pointing to backend
 npm run dev
+
 =====> Author
+
 Arun Kumar
-Computer Science & Engineering Undergraduate
+Computer Science and Engineering Undergraduate
 Galgotias University
-Stack: MERN (MongoDB, Express, React, Node.js)
+
+GPA 7.6
+
+Stack MERN MongoDB Express React Node.js
