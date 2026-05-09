@@ -8,7 +8,7 @@ Frontend Interface
 https://taskorbit-production.up.railway.app
 
 Backend API Service
-https://taskorbit-production.up.railway.app
+https://beautiful-warmth-production-0ed6.up.railway.app/
 
 =====> System Architecture
 
