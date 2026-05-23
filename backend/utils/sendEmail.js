@@ -1,7 +1,7 @@
 const nodemailer = require("nodemailer");
-const dns = require("dns"); // 1. Import the built-in DNS module
+const dns = require("dns");
 
-// 2. CRITICAL: Force Node.js 17+ to strictly use IPv4 for all network requests
+// 1. GLOBAL DNS OVERRIDE: Forces Node 17+ to prioritize IPv4
 dns.setDefaultResultOrder("ipv4first");
 
 const sendEmail = async (options) => {
@@ -17,8 +17,10 @@ const sendEmail = async (options) => {
       tls: {
         rejectUnauthorized: false, 
       },
-      // CRITICAL: Forces IPv4 to resolve the ENETUNREACH error on Render
-      family: 4 
+      // 2. NODEMAILER OVERRIDE: Tells Nodemailer to request IPv4
+      family: 4,
+      // 3. THE NUKE: Binds the connection directly to the local IPv4 interface
+      localAddress: "0.0.0.0" 
     });
 
     const mailOptions = {
