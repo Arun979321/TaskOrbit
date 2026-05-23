@@ -1,39 +1,21 @@
-const nodemailer = require("nodemailer");
-const dns = require("dns");
+const { Resend } = require("resend");
 
-dns.setDefaultResultOrder("ipv4first");
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 const sendEmail = async (options) => {
   try {
-    const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
-      port: 587,
-      secure: false, // TLS via STARTTLS
-      auth: {
-        user: process.env.EMAIL_USERNAME,
-        pass: process.env.EMAIL_PASSWORD,
-      },
-      connectionTimeout: 15000,
-      greetingTimeout: 15000,
-      socketTimeout: 15000,
-      tls: {
-        rejectUnauthorized: false,
-      },
-      family: 4, // force IPv4
-    });
-
-    const mailOptions = {
-      from: `Task Orbit <${process.env.EMAIL_USERNAME}>`,
+    const response = await resend.emails.send({
+      from: "onboarding@resend.dev",
       to: options.email,
       subject: options.subject,
       text: options.message,
-    };
+    });
 
-    const info = await transporter.sendMail(mailOptions);
-    console.log("Email sent:", info.messageId);
+    console.log("Email sent:", response);
+    return response;
 
   } catch (error) {
-    console.error("Full Nodemailer Error:", error);
+    console.error("Resend Error:", error);
     throw new Error("Email could not be sent");
   }
 };
