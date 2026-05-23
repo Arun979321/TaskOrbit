@@ -1,4 +1,8 @@
 const nodemailer = require("nodemailer");
+const dns = require("dns"); // 1. Import the built-in DNS module
+
+// 2. CRITICAL: Force Node.js 17+ to strictly use IPv4 for all network requests
+dns.setDefaultResultOrder("ipv4first");
 
 const sendEmail = async (options) => {
   try {
